@@ -1,0 +1,195 @@
+from building import *
+
+cwd = GetCurrentDir()
+CPPPATH = [
+	cwd,
+	cwd + '/ccmu',
+	cwd + '/common',
+	cwd + '/dma',
+	cwd + '/gpio',
+	cwd + '/pwm',
+	cwd + '/timer',
+	cwd + '/uart',
+]
+
+src = Split('''
+	ccmu/hal_clk.c
+	ccmu/hal_reset.c
+	common/hal_atomic.c
+	common/hal_list.c
+	common/hal_os.c
+	common/hal_interrupt.c
+	common/hal_waitqueue.c
+	dma/hal_dma.c
+	gpio/hal_gpio.c
+	pwm/hal_pwm.c
+	timer/hal_avs.c
+	timer/hal_timer.c
+	timer/hal_htimer.c
+	uart/hal_uart.c
+''')
+
+sunxi_ng_src = Split('''
+	ccmu/sunxi-ng/clk-fixed-rate.c
+	ccmu/sunxi-ng/ccu_common.c
+	ccmu/sunxi-ng/ccu_sdm.c
+	ccmu/sunxi-ng/ccu_mp.c
+	ccmu/sunxi-ng/ccu_mult.c
+	ccmu/sunxi-ng/clk-fixed-factor.c
+	ccmu/sunxi-ng/ccu_reset.c
+	ccmu/sunxi-ng/ccu_gate.c
+	ccmu/sunxi-ng/ccu-sun8iw20-rtc.c
+	ccmu/sunxi-ng/ccu-sun8iw20-r.c
+	ccmu/sunxi-ng/ccu_frac.c
+	ccmu/sunxi-ng/ccu_mux.c
+	ccmu/sunxi-ng/ccu_nm.c
+	ccmu/sunxi-ng/ccu.c
+	ccmu/sunxi-ng/ccu_nk.c
+	ccmu/sunxi-ng/clk.c
+	ccmu/sunxi-ng/ccu_nkm.c
+	ccmu/sunxi-ng/clk-divider.c
+	ccmu/sunxi-ng/ccu_div.c
+	ccmu/sunxi-ng/ccu_nkmp.c
+	ccmu/sunxi-ng/ccu-sun8iw20.c
+''')
+
+src += sunxi_ng_src
+
+ce_src = Split('''
+	ce/ce_common.c
+	ce/hal_ce.c
+''')
+
+src += ce_src
+ce_path = [cwd + '/ce']
+CPPPATH += ce_path
+
+cir_src = Split('''
+	cir/hal_cir.c
+''')
+
+src += cir_src
+cir_path = [cwd + '/cir']
+CPPPATH += cir_path
+
+disp2_path = [
+    cwd + '/disp2/disp',
+    cwd + '/disp2/soc']
+
+disp2_src = Split('''
+	disp2/disp/de/disp_manager.c
+	disp2/disp/de/disp_lcd.c
+	disp2/disp/de/disp_display.c
+	disp2/disp/de/disp_device.c
+	disp2/disp/de/disp_features.c
+	disp2/disp/de/disp_capture.c
+	disp2/disp/de/lowlevel_v2x/de_wb.c
+	disp2/disp/de/lowlevel_v2x/de_dsi.c
+	disp2/disp/de/lowlevel_v2x/de_peak.c
+	disp2/disp/de/lowlevel_v2x/de_gsu.c
+	disp2/disp/de/lowlevel_v2x/de_vep_table.c
+	disp2/disp/de/lowlevel_v2x/de_hal.c
+	disp2/disp/de/lowlevel_v2x/de_vsu.c
+	disp2/disp/de/lowlevel_v2x/de_scaler_table.c
+	disp2/disp/de/lowlevel_v2x/de_ccsc.c
+	disp2/disp/de/lowlevel_v2x/de_bws.c
+	disp2/disp/de/lowlevel_v2x/de_lti.c
+	disp2/disp/de/lowlevel_v2x/de_lcd_sun50iw10.c
+	disp2/disp/de/lowlevel_v2x/disp_al.c
+	disp2/disp/de/lowlevel_v2x/de_clock.c
+	disp2/disp/de/lowlevel_v2x/de_smbl.c
+	disp2/disp/de/lowlevel_v2x/de_enhance.c
+	disp2/disp/de/lowlevel_v2x/de_rtmx.c
+	disp2/disp/de/lowlevel_v2x/de_ase.c
+	disp2/disp/de/lowlevel_v2x/de_feat.c
+	disp2/disp/de/lowlevel_v2x/de_fce.c
+	disp2/disp/de/lowlevel_v2x/de_dcsc.c
+	disp2/disp/de/lowlevel_v2x/de_fcc.c
+	disp2/disp/de/disp_private.c
+	disp2/disp/de/disp_enhance.c
+	disp2/disp/lcd/default_panel.c
+	disp2/disp/lcd/lcd_source.c
+	disp2/disp/lcd/panels.c
+	disp2/disp/lcd/hx8398_dsi.c
+	disp2/disp/disp_sys_intf.c
+	disp2/disp/dev_disp.c
+	disp2/disp/disp_debug.c
+	disp2/soc/disp_board_config.c
+	disp2/soc/platform_resource.c
+	disp2/soc/sun20iw1.c
+''')
+
+src += disp2_src
+CPPPATH += disp2_path
+
+efuse_path = [cwd + '/efuse']
+efuse_src = Split('''
+	efuse/efuse.c
+	efuse/hal_efuse.c
+''')
+src += efuse_src
+CPPPATH += efuse_path
+
+
+g2d_path = [cwd + '/g2d']
+g2d_src = Glob('g2d/*.c')
+src += g2d_src
+CPPPATH += g2d_path
+
+eth_path = [
+    cwd + '/gmac',
+    cwd + '/phy']
+
+eth_src = Split('''
+	gmac/hal_gmac.c
+	phy/hal_miiphyutil.c
+	phy/hal_phy.c
+''')
+
+if GetDepend('BSP_USING_ETH'):
+	CPPPATH += eth_path
+	src += eth_src
+	
+gpadc_path = [cwd + '/gpadc']
+
+gpadc_src = Split('''
+	gpadc/hal_gpadc.c
+''')
+
+src += gpadc_src
+CPPPATH += gpadc_path
+
+rtc_path = [cwd + '/rtc']
+
+rtc_src = Split('''
+	rtc/hal_rtc.c
+	rtc/rtc-lib.c
+''')
+
+if GetDepend('BSP_USING_RTC'):
+	CPPPATH += rtc_path
+	src += rtc_src
+	
+tpadc_path = [cwd + '/tpadc']
+
+tpadc_src = Split('''
+	tpadc/hal_tpadc.c
+''')
+
+if GetDepend('BSP_USING_TOUCH_TP'):
+	CPPPATH += tpadc_path
+	src += tpadc_src
+	
+twi_path = [cwd + '/twi']
+
+twi_src = Split('''
+	twi/hal_twi.c
+''')
+
+if GetDepend('BSP_USING_I2C'):
+	CPPPATH += twi_path
+	src += twi_src
+
+group = DefineGroup('hal', src, depend = [''], CPPPATH = CPPPATH)
+
+Return('group')

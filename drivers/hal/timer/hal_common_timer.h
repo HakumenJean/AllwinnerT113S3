@@ -1,0 +1,63 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+#ifndef DRIVERS_HAL_TIMER_HAL_COMMON_TIMER_H_
+#define DRIVERS_HAL_TIMER_HAL_COMMON_TIMER_H_
+
+#include <stdbool.h>
+
+typedef enum {
+    HAL_HRTIMER0,
+    HAL_HRTIMER1,
+    HAL_HRTIMER_NUM
+}hal_htimer_id;
+
+typedef enum
+{
+    SUNXI_TMR0 = 0,
+    SUNXI_TMR1,
+    SUNXI_TMR_NUM,
+}hal_timer_id;
+
+typedef void (*htimer_callback)(void *param);
+typedef void (*timer_callback)(void *param);
+
+void hal_htimer_init(void);
+void hal_htimer_stop(hal_htimer_id id);
+void hal_htimer_start(hal_htimer_id id, bool periodic);
+int hal_htimer_set(hal_htimer_id id, uint32_t clock, htimer_callback callback, void *callback_param);
+
+void hal_timer_init(void);
+int hal_timer_set(hal_timer_id id, uint32_t clock, timer_callback callback, void *callback_param);
+void hal_timer_start(hal_timer_id id, bool periodic);
+void hal_timer_stop(hal_timer_id id);
+
+#endif /* DRIVERS_HAL_TIMER_HAL_COMMON_TIMER_H_ */

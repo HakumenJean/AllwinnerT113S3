@@ -1,0 +1,211 @@
+menu "Hardware Drivers Config"
+
+config BSP_CHIP_T113
+    bool 
+    select ARCH_ARM
+    select RT_USING_CPU_FFS
+    select ARCH_ARM_CORTEX_A
+    select RT_USING_COMPONENTS_INIT
+    select RT_USING_USER_MAIN
+    select RT_USING_GIC_V2
+    select ARCH_ARM_CORTEX_A7
+    default y
+    
+config RT_USING_FPU
+	bool "Enable Hardware FPU"
+	default n
+	help
+		need select fpu flags and open this config
+
+menu "UART"
+
+config BSP_USING_UART0
+    bool "Enable UART0"
+    select RT_USING_SERIAL
+    default n
+
+config BSP_USING_UART1
+    bool "Enable UART1"
+    select RT_USING_SERIAL
+    default n
+
+config BSP_USING_UART2
+    bool "Enable UART2"
+    select RT_USING_SERIAL
+    default n
+
+config BSP_USING_UART3
+    bool "Enable UART3"
+    select RT_USING_SERIAL
+    default y
+    
+config BSP_USING_UART4
+    bool "Enable UART4"
+    select RT_USING_SERIAL
+    default n
+    
+config BSP_USING_UART5
+    bool "Enable UART5"
+    select RT_USING_SERIAL
+    default n
+
+endmenu
+
+menu "SPI"
+
+config BSP_USING_SPI0
+    bool "Enable SPI0"
+    select RT_USING_SPI
+    default y
+    
+config BSP_USING_SPI1
+    bool "Enable SPI1"
+    select RT_USING_SPI
+    default y
+    
+menuconfig BSP_USING_SPI_FLASH
+	bool "Enable SPI Flash"
+	select BSP_USING_SPI0
+	select RT_USING_SFUD
+	default y
+	
+if 	BSP_USING_SPI_FLASH
+	
+config SPI_FLASH_CHIP_NAME
+	string "Chip name for spi flash"
+	default "gd25qxx"
+
+endif
+
+endmenu
+
+menu "SMHC"
+
+config BSP_USING_SMHC0
+	bool "Enable SMHC0"
+	select RT_USING_SDIO
+	default n
+	
+config BSP_USING_SMHC1
+	bool "Enable SMHC1"
+	select RT_USING_SDIO
+	default n
+	
+config BSP_USING_SMHC2
+	bool "Enable SMHC2"
+	select RT_USING_SDIO
+	default n
+
+endmenu
+
+menu "USB"
+
+config T113_USING_USB0_HOST
+	bool "Enable USB0 HOST"
+	select PKG_USING_CHERRYUSB
+	select PKG_CHERRYUSB_HOST
+	select PKG_CHERRYUSB_HOST_CUSTOM
+	select PKG_CHERRYUSB_HOST_MSC
+	default n
+	help
+		Select CherryUSB HSOT IP SUSTOM
+	
+config T113_USING_USB1_HOST
+	bool "Enable USB1 HOST"
+	select PKG_USING_CHERRYUSB
+	select PKG_CHERRYUSB_HOST
+	select PKG_CHERRYUSB_HOST_CUSTOM
+	select PKG_CHERRYUSB_HOST_MSC
+	default n
+	help
+		Select CherryUSB HSOT IP SUSTOM
+
+endmenu
+
+menuconfig BSP_USING_I2C
+    bool "Enable I2C"
+    select RT_USING_I2C
+    default n
+    
+if BSP_USING_I2C
+	config BSP_USING_I2C0
+	bool "Enable I2C0"
+	default n
+	
+	config BSP_USING_I2C1
+		bool "Enable I2C1"
+		default n
+	
+	config BSP_USING_I2C2
+		bool "Enable I2C2"
+		default n
+		
+	config BSP_USING_I2C3
+		bool "Enable I2C3"
+		default n
+endif
+
+menuconfig BSP_USING_TOUCH
+    bool "TOUCH"
+    select RT_USING_TOUCH
+    select RT_TOUCH_PIN_IRQ
+    default n
+
+if BSP_USING_TOUCH
+    choice
+        prompt"select touch driver"
+        default BSP_USING_TOUCH_TP
+        
+        config BSP_USING_TOUCH_GT9XX
+            bool "use gt9xx touch driver"
+        config BSP_USING_TOUCH_TP
+            bool "use hardware tp touch driver"
+    endchoice
+    
+    if BSP_USING_TOUCH_GT9XX
+	
+		config GT9XX_I2C_BUS_NAME
+			string "I2c bus name for gt9xx"
+			default "i2c2"
+	
+	endif
+endif
+
+config BSP_USING_LCD
+    bool "Enable LCD"
+    default n
+
+menuconfig BSP_USING_RTC
+    bool "Enable RTC"
+    select RT_USING_RTC
+    default n
+    
+if BSP_USING_RTC
+
+    choice
+        prompt"select rtc driver"
+        default BSP_USING_RTC_DS1307
+        
+        config BSP_USING_RTC_DS1307
+            bool "use ds1307 rtc driver"
+        config BSP_USING_RTC_SUNXI
+            bool "use hardware rtc driver"
+    endchoice
+
+endif
+
+config BSP_USING_ETH
+	bool "Enable Ethernet"
+	select RT_USING_LWIP
+	default n
+
+config BSP_USING_PWM
+    bool "Enable PWM"
+    select RT_USING_PWM
+    default n
+    
+config BSP_USING_CE
+	bool "Enable Crypto Engine"
+	default n
+
+endmenu
