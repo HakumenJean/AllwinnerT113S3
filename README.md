@@ -20,6 +20,7 @@ T113S3 是由全志公司推出的ARM A7内核的SOC
 |PC操作系统|Linux/MacOS|
 |编译器|arm-none-eabi-gcc version 10.2.1 (release)|
 |构建工具|scons|
+|下载工具|xfel|
 1) 下载源码
 
 ```
@@ -32,11 +33,7 @@ T113S3 是由全志公司推出的ARM A7内核的SOC
     pkgs --upgrade
     
 ```
-3) 安装下载工具
-```
-    xfel
-```
-4) 编译
+3) 编译
 ```
     scons
 ```
