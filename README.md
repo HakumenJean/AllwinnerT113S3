@@ -23,11 +23,10 @@ T113S3 是由全志公司推出的ARM A7内核的SOC
 1) 下载源码
 
 ```
-    git clone https://github.com/RT-Thread/rt-thread.git
+    git clone https://github.com/HakumenJean/AllwinnerT113S3.git
 ```
 2) 配置工程并准备env
 ```
-    cd rt-thread/bsp/allwinner_t113s3
     scons --menuconfig
     source ~/.env/env.sh
     pkgs --upgrade
@@ -123,8 +122,8 @@ msh />
 ## 5. 联系人信息
 
 维护人:
-[yc113][4] < [1696015776@qq.com][5] >
+[HakumenJean][4] < [1696015776@qq.com][5] >
 
 
   [1]: https://www.rt-thread.org/page/download.html
-  [4]: https://github.com/yc113
+  [4]: https://github.com/HakumenJean
