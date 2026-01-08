@@ -1,6 +1,0 @@
-clean2:
-	@$(file > clean, $(OBJS) $(C_DEPS) $(CPP_DEPS)) project_cleaner.exe  clean
-	-$(RM) $(CC_DEPS) $(C++_DEPS) $(C_UPPER_DEPS) $(CXX_DEPS) $(SECONDARY_FLASH) $(SECONDARY_SIZE) $(ASM_DEPS) $(S_UPPER_DEPS) *.elf
-	-@echo ' '
-
-*.elf: $(wildcard ../link.lds)
