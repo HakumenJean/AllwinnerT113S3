@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, RT-Thread Development Team
+ * Copyright (c) 2026, HakumenJean
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -108,47 +108,6 @@ void usb_gate_open(rt_uint8_t busid)
 void usb_clean_siddp(struct usbh_bus *bus)
 {
     *(volatile rt_uint32_t *)(bus->hcd.reg_base + 0x810) &= ~(1 << 3);
-}
-
-static void usb_new_phyx_tp_write(struct usbh_bus *bus, int addr, int data, int len)
-{
-    rt_uint32_t base = bus->hcd.reg_base;
-
-    for (int i = 0; i < len; i++) {
-        *(volatile rt_uint8_t *)(base + 0x810) |= 1 << 1;
-
-        *(volatile rt_uint8_t *)(base + 0x810 + 1) = addr + i;
-
-        *(volatile rt_uint8_t *)(base + 0x810) &= ~(1 << 0);
-
-        *(volatile rt_uint8_t *)(base + 0x810) &= ~(1 << 7);
-        *(volatile rt_uint8_t *)(base + 0x810) |= (data & 0x1) << 7;
-
-        *(volatile rt_uint8_t *)(base + 0x810) |= 1 << 0;
-
-        *(volatile rt_uint8_t *)(base + 0x810) &= ~(1 << 0);
-
-        *(volatile rt_uint8_t *)(base + 0x810) &= ~(1 << 1);
-
-        data >>= 1;
-    }
-}
-
-void usb_new_phy_init(struct usbh_bus *bus)
-{
-    rt_int32_t value = 0;
-    rt_uint32_t efuse_val = 0x1E5080F;
-
-    usb_new_phyx_tp_write(bus, 0x1C, 0x0, 0x03);
-
-    /* vref mode */
-    usb_new_phyx_tp_write(bus, 0x60, 0x0, 0x01);
-
-    value = (efuse_val & 0x3C0000) >> 18;
-    usb_new_phyx_tp_write(bus, 0x44, value, 0x04);
-
-    value = (efuse_val & 0x1C00000) >> 22;
-    usb_new_phyx_tp_write(bus, 0x36, value, 0x03);
 }
 
 void usb_hci_set_passby(struct usbh_bus *bus)
